@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:23:28 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/10 02:35:20 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/12 11:06:13 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	RPN::calc(std::string op)
 
 	while (iss >> token)
 	{
-		if (std::isdigit(token[0]))
-			lst.push_back(std::stoi(token));
+		if (token.size() == 1 && std::isdigit(token[0]))
+			lst.push_back(std::atoi(token));
 		else if (token == "+" || token == "-" || token == "*" || token == "/")
 		{
 			if (lst.size() < 2)
