@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:12:26 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/10 02:35:40 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/13 13:35:04 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <cstdlib>
+#include <exception>
 
 class RPN
 {
@@ -28,4 +30,9 @@ class RPN
 
 	public:
 		static	void	calc(std::string op);
+
+	class NotEnoughOperandException: public std::exception { public: const char *what() const throw(); };
+	class DivisionByZeroException: public std::exception { public: const char *what() const throw(); };
+	class InvalideTokenException: public std::exception { public: const char *what() const throw(); };
+	class InvalideExpressionException: public std::exception { public: const char *what() const throw(); };
 };

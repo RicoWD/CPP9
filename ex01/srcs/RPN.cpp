@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:23:28 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/12 11:06:13 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:26:23 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	RPN::calc(std::string op)
 	while (iss >> token)
 	{
 		if (token.size() == 1 && std::isdigit(token[0]))
-			lst.push_back(std::atoi(token));
+			lst.push_back(std::atoi(token.c_str()));
 		else if (token == "+" || token == "-" || token == "*" || token == "/")
 		{
 			if (lst.size() < 2)
@@ -63,9 +63,9 @@ void	RPN::calc(std::string op)
 				std::cerr << "Error: Not enough operands" << std::endl;
 				return ;
 			}
-			int b = lst.back(); 
+			int b = lst.back();
 			lst.pop_back();
-			int a = lst.back(); 
+			int a = lst.back();
 			lst.pop_back();
 
 			if (token == "+")
@@ -92,8 +92,38 @@ void	RPN::calc(std::string op)
 	}
 	if (lst.size() != 1)
 	{
-		std::cerr << "Error: Invalid expression" << std::endl;
+		if (op.find("+-*/") != std::string::npos)
+			std::cout << op << std::endl;
+		else
+			std::cerr << "Error: Invalid expression" << std::endl;
 		return ;
 	}
 	std::cout << lst.back() << std::endl;
+}
+
+
+/* ************************************************************************** */
+// 																			  //
+// 						   			EXCEPTION								  //
+//																	 		  //
+/* ************************************************************************** */
+
+class RPN::NotEnoughOperandException::what() const throw()
+{
+	return ("Not Enough Operand Exception");
+}
+
+class RPN::DivisionByZeroException::what() const throw()
+{
+	return ("Division By Zero Exception");
+}
+
+class RPN::InvalideTokenException::what() const throw()
+{
+	return ("Invalide Token Exception");
+}
+
+class RPN::InvalideTokenException::what() const throw()
+{
+	return ("Invalide Token Exception");
 }
