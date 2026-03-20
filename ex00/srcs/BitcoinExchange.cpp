@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 21:17:38 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/20 05:46:54 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/20 14:24:38 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	BitcoinExchange::loadDatabase(const std::string& filename)
 {
 	std::ifstream	db;
 	
-	db.open(filename, std::ifstream::in);
+	db.open(filename.c_str(), std::ifstream::in);
 	if (!db)
 	{
 		std::cerr << "Error: cannot open database file: " << filename << std::endl;
@@ -95,7 +95,7 @@ void BitcoinExchange::processInput(const std::string& filename)
 {
 	std::ifstream	input;
 	
-	input.open(filename, std::ifstream::in);
+	input.open(filename.c_str(), std::ifstream::in);
 	if (!input)
 	{
 		std::cerr << "Error: cannot open input file: " << filename << std::endl;
