@@ -6,39 +6,11 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:23:28 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/13 14:26:23 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/20 13:34:24 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/RPN.hpp"
-
-/* ************************************************************************** */
-// 																			  //
-// 						   ORTHODOX CANONICAL FORM							  //
-//																	 		  //
-/* ************************************************************************** */
-
-// RPN::RPN(const std::string op): _op(op)
-// {
-// 	if (RPN::parse(_op) == false)
-// 	{
-// 		std::cerr << "Error: Wrong input" << std::endl;
-// 		return ;
-// 	}
-// }
-
-// RPN::RPN(const RPN& cpy): _lst(cpy._lst), _op(cpy._op) {}
-
-// RPN::RPN(const RPN& cpy)
-// {
-// 	if (this != &cpy)
-// 	{
-// 		*this->_lst	= cpy._lst;
-// 		*this->_op	= cpy._op;
-// 	}
-		
-// 	return (*this);
-// }
 
 /* ************************************************************************** */
 // 																			  //
