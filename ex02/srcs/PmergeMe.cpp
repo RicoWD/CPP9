@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:42:18 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/25 02:39:25 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:49:11 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	PmergeMe::sortVector()
 	// std::sort(_vector.begin(), _vector.end());
 	
 	_vPairs.clear();
-	for (std::vector<int>::const_iterator itV = _vector.begin(); itV + 1 != _vector.end(); itV += 2)
+	for (std::vector<int>::const_iterator itV = _vector.begin(); itV < _vector.end() - 1; itV += 2)
 	{
 		if (*itV < *(itV + 1))
 			_vPairs.push_back(std::make_pair(*itV, *(itV + 1)));
@@ -157,7 +157,7 @@ void	PmergeMe::sortDeque()
 	// std::sort(_deque.begin(), _deque.end());
 
 	_dPairs.clear();
-	for (std::deque<int>::const_iterator itD = _deque.begin(); itD + 1 != _deque.end(); itD += 2)
+	for (std::deque<int>::const_iterator itD = _deque.begin(); itD < _deque.end() - 1; itD += 2)
 	{
 		if (*itD < *(itD + 1))
 			_dPairs.push_back(std::make_pair(*itD, *(itD + 1)));
