@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:45:58 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/24 02:50:56 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/25 02:27:19 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,21 @@
 # include <cstring>
 # include <cctype>
 # include <ctime>
+# include <algorithm>
 
 class PmergeMe
 {
 	private:
-		std::vector<int>	_vectorInt;
-		std::deque<int>		_dequeInt;
+		std::vector<int>	_vector;
+		std::deque<int>		_deque;
 		unsigned int		_nbInts;
+		bool				_isOdd;
 		int					_oddValue;
 		double				_vLaps;
 		double				_dLaps;
 		
 		std::vector<std::pair<int, int> >	_vPairs;
 		std::deque<std::pair<int, int> >	_dPairs;
-
-		std::vector<int>	_vectorSorted;
-		std::deque<int>		_dequeSorted;
 
 
 	public:

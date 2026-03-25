@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:39:23 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/24 03:07:04 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/25 00:52:28 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ int	main(int ac, char **av)
 	
 	sort.printPairs();
 	sort.printContainer();
-
+	return (0);
 }
