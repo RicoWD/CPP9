@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:42:18 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/25 03:49:11 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:05:36 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,15 @@ void	PmergeMe::sortVector()
 	}
 	
 	_vector.clear();
+	_vector.push_back(_vPairs.begin()->first);
 	for (std::vector<std::pair<int, int> >::iterator itVP = _vPairs.begin(); itVP != _vPairs.end(); itVP++)
 		_vector.push_back(itVP->second);
-	for (std::vector<std::pair<int, int> >::iterator itVP = _vPairs.begin(); itVP != _vPairs.end(); itVP++)
-	{
-		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), itVP->first);
-		_vector.insert(pos, itVP->first);
-	}
+	// for (std::vector<std::pair<int, int> >::iterator itVP = _vPairs.begin(); itVP != _vPairs.end(); itVP++)
+	// {
+	// 	std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), itVP->first);
+	// 	_vector.insert(pos, itVP->first);
+	// }
+	// std::vector<size_t> buildJacorbsthalOrder(size_t pairCount);
 	if (_isOdd)
 	{
 		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), _oddValue);
