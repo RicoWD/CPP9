@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:42:18 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/25 04:05:36 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/26 04:42:15 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& cpy)
 		_oddValue = cpy._oddValue;
 		_vLaps = cpy._vLaps;
 		_dLaps = cpy._dLaps;
-		_vPairs = cpy._vPairs;
-		_dPairs = cpy._dPairs;
 	}
 	return (*this);
 }
@@ -109,34 +107,191 @@ void	PmergeMe::globalSort()
 	sortDeque();
 }
 
+void			merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end)
+{
+	int	firstMid	= mid - begin + 1;
+	int	lastMid		= end - mid;
+
+	std::vector<std::pair<int, int> >	vFirstMid(firstMid);
+	std::vector<std::pair<int, int> >	vLastMid(lastMid);
+
+	for (int i = 0; i < firstMid; i++)
+		vFirstMid[i]	= vPairs[begin + i];
+	for (int j = 0; j < lastMid; j++)
+		vLastMid[j]		= vPairs[mid + 1 + j];
+	
+	int	i	= 0;
+	int	j	= 0;
+	int	k	= begin;
+
+	while (i < firstMid && j < lastMid)
+	{
+		if (vFirstMid[i] <= vLastMid[j])
+		{
+			vPairs[k] = vFirstMid[i];
+			i++;
+		}
+		else
+		{
+			vPairs[k] = vLastMid[i];
+		}
+		k++;
+	}
+	
+	while (i < firstMid)
+	{
+		vPairs[k] = vLastMid[i];
+		i++;
+		k++;
+	}
+
+	while (j < lastMid)
+	{
+		vPairs[k] = vLastMid[j];
+		j++;
+		k++;
+	}
+}
+
+void			PmergeMe::merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end)
+{
+	int	firstMid	= mid - begin + 1;
+	int	lastMid		= end - mid;
+
+	std::vector<std::pair<int, int> >	vFirstMid(firstMid);
+	std::vector<std::pair<int, int> >	vLastMid(lastMid);
+
+	for (int i = 0; i < firstMid; i++)
+		vFirstMid[i]	= vPairs[begin + i];
+	for (int j = 0; j < lastMid; j++)
+		vLastMid[j]		= vPairs[mid + 1 + j];
+	
+	int	i	= 0;
+	int	j	= 0;
+	int	k	= begin;
+
+	while (i < firstMid && j < lastMid)
+	{
+		if (vFirstMid[i].second <= vLastMid[j].second)
+		{
+			vPairs[k] = vFirstMid[i];
+			i++;
+		}
+		else
+		{
+			vPairs[k] = vLastMid[j];
+			j++;
+		}
+		k++;
+	}
+	
+	while (i < firstMid)
+	{
+		vPairs[k] = vLastMid[i];
+		i++;
+		k++;
+	}
+
+	while (j < lastMid)
+	{
+		vPairs[k] = vLastMid[j];
+		j++;
+		k++;
+	}
+}
+
+void			PmergeMe::merge(std::deque<std::pair<int, int> >& dPairs, int begin, int mid, int end)
+{
+	int	firstMid	= mid - begin + 1;
+	int	lastMid		= end - mid;
+
+	std::deque<std::pair<int, int> >	dFirstMid(firstMid);
+	std::deque<std::pair<int, int> >	dLastMid(lastMid);
+
+	for (int i = 0; i < firstMid; i++)
+		dFirstMid[i]	= dPairs[begin + i];
+	for (int j = 0; j < lastMid; j++)
+		dLastMid[j]		= dPairs[mid + 1 + j];
+	
+	int	i	= 0;
+	int	j	= 0;
+	int	k	= begin;
+
+	while (i < firstMid && j < lastMid)
+	{
+		if (dFirstMid[i].second <= dLastMid[j].second)
+		{
+			dPairs[k] = dFirstMid[i];
+			i++;
+		}
+		else
+		{
+			dPairs[k] = dLastMid[j];
+			j++;
+		}
+		k++;
+	}
+	
+	while (i < firstMid)
+	{
+		dPairs[k] = dLastMid[i];
+		i++;
+		k++;
+	}
+
+	while (j < lastMid)
+	{
+		dPairs[k] = dLastMid[j];
+		j++;
+		k++;
+	}
+}
+
+
+void	PmergeMe::mergeSort(std::vector<std::pair<int, int> >& vPairs, int begin, int end)
+{
+	if (begin >= end)
+		return ;
+
+	int mid = begin + (end - begin) / 2;
+	mergeSort(vPairs, begin, mid);
+	mergeSort(vPairs, mid + 1, end);
+	merge(vPairs, begin, mid, end);
+}
+
+void	PmergeMe::mergeSort(std::deque<std::pair<int, int> >& dPairs, int begin, int end)
+{
+	if (begin >= end)
+		return ;
+
+	int mid = begin + (end - begin) / 2;
+	mergeSort(dPairs, begin, mid);
+	mergeSort(dPairs, mid + 1, end);
+	merge(dPairs, begin, mid, end);
+}
+
+
 void	PmergeMe::sortVector()
 {
 	clock_t	start	=	clock();
-	// std::sort(_vector.begin(), _vector.end());
+	std::vector<std::pair<int, int> > vPairs;
 	
-	_vPairs.clear();
+	vPairs.clear();
 	for (std::vector<int>::const_iterator itV = _vector.begin(); itV < _vector.end() - 1; itV += 2)
 	{
 		if (*itV < *(itV + 1))
-			_vPairs.push_back(std::make_pair(*itV, *(itV + 1)));
+			vPairs.push_back(std::make_pair(*itV, *(itV + 1)));
 		else
-			_vPairs.push_back(std::make_pair(*(itV + 1), *itV));
+			vPairs.push_back(std::make_pair(*(itV + 1), *itV));
 	}
 
-	for (size_t i = 0; i < _vPairs.size(); i++)
-	{
-		for (size_t j = 0; j + 1 < _vPairs.size() - i; j++)
-		{
-			if (_vPairs[j].second > _vPairs[j + 1].second)
-				std::swap(_vPairs[j], _vPairs[j + 1]);
-		}
-	}
+	mergeSort(vPairs, 0, vPairs.size() - 1);
 	
 	_vector.clear();
-	_vector.push_back(_vPairs.begin()->first);
-	for (std::vector<std::pair<int, int> >::iterator itVP = _vPairs.begin(); itVP != _vPairs.end(); itVP++)
+	_vector.push_back(vPairs.begin()->first);
+	for (std::vector<std::pair<int, int> >::iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
 		_vector.push_back(itVP->second);
-	// for (std::vector<std::pair<int, int> >::iterator itVP = _vPairs.begin(); itVP != _vPairs.end(); itVP++)
+	// for (std::vector<std::pair<int, int> >::iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
 	// {
 	// 	std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), itVP->first);
 	// 	_vector.insert(pos, itVP->first);
@@ -156,30 +311,33 @@ void	PmergeMe::sortVector()
 void	PmergeMe::sortDeque()
 {
 	clock_t	start	=	clock();
-	// std::sort(_deque.begin(), _deque.end());
+	std::deque<std::pair<int, int> > dPairs;
 
-	_dPairs.clear();
+	dPairs.clear();
 	for (std::deque<int>::const_iterator itD = _deque.begin(); itD < _deque.end() - 1; itD += 2)
 	{
 		if (*itD < *(itD + 1))
-			_dPairs.push_back(std::make_pair(*itD, *(itD + 1)));
+			dPairs.push_back(std::make_pair(*itD, *(itD + 1)));
 		else
-			_dPairs.push_back(std::make_pair(*(itD + 1), *itD));
+			dPairs.push_back(std::make_pair(*(itD + 1), *itD));
 	}
 
-	for (size_t i = 0; i < _dPairs.size(); i++)
-	{
-		for (size_t j = 0; j + 1 < _dPairs.size() - i; j++)
-		{
-			if (_dPairs[j].second > _dPairs[j + 1].second)
-				std::swap(_dPairs[j], _dPairs[j + 1]);
-		}
-	}
+	// for (size_t i = 0; i < dPairs.size(); i++)
+	// {
+	// 	for (size_t j = 0; j + 1 < dPairs.size() - i; j++)
+	// 	{
+	// 		if (dPairs[j].second > dPairs[j + 1].second)
+	// 			std::swap(dPairs[j], dPairs[j + 1]);
+	// 	}
+	// }
+
+	mergeSort(dPairs, 0, dPairs.size() - 1);
+
 		
 	_deque.clear();
-	for (std::deque<std::pair<int, int> >::iterator itDP = _dPairs.begin(); itDP != _dPairs.end(); itDP++)
+	for (std::deque<std::pair<int, int> >::iterator itDP = dPairs.begin(); itDP != dPairs.end(); itDP++)
 		_deque.push_back(itDP->second);
-	for (std::deque<std::pair<int, int> >::iterator itDP = _dPairs.begin(); itDP != _dPairs.end(); itDP++)
+	for (std::deque<std::pair<int, int> >::iterator itDP = dPairs.begin(); itDP != dPairs.end(); itDP++)
 	{
 		std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), itDP->first);
 		_deque.insert(pos, itDP->first);
@@ -244,15 +402,15 @@ void	PmergeMe::printContainer() const
 
 void	PmergeMe::printPairs() const
 {
-	std::cout << "<-- Vector Pairs -->" << std::endl;
-	for (std::vector<std::pair<int, int> >::const_iterator itVP = _vPairs.begin(); itVP != _vPairs.end(); itVP++)
-		std::cout << itVP->first << " | " << itVP->second << std::endl;
-	if (_nbInts % 2 != 0)
-		std::cout << _oddValue << std::endl;
+	// std::cout << "<-- Vector Pairs -->" << std::endl;
+	// for (std::vector<std::pair<int, int> >::const_iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
+	// 	std::cout << itVP->first << " | " << itVP->second << std::endl;
+	// if (_nbInts % 2 != 0)
+	// 	std::cout << _oddValue << std::endl;
 
-	std::cout << "\n<-- Deque Pairs -->" << std::endl;
-	for (std::deque<std::pair<int, int> >::const_iterator itDP = _dPairs.begin(); itDP != _dPairs.end(); itDP++)
-		std::cout << itDP->first << " | " << itDP->second << std::endl;
+	// std::cout << "\n<-- Deque Pairs -->" << std::endl;
+	// for (std::deque<std::pair<int, int> >::const_iterator itDP = _dPairs.begin(); itDP != _dPairs.end(); itDP++)
+	// 	std::cout << itDP->first << " | " << itDP->second << std::endl;
 	if (_nbInts % 2 != 0)
 		std::cout << _oddValue << std::endl;
 }

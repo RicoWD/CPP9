@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:45:58 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/25 02:27:19 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/26 04:25:46 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ class PmergeMe
 		int					_oddValue;
 		double				_vLaps;
 		double				_dLaps;
-		
-		std::vector<std::pair<int, int> >	_vPairs;
-		std::deque<std::pair<int, int> >	_dPairs;
-
 
 	public:
 		// OCF 
@@ -59,6 +55,11 @@ class PmergeMe
 		void			globalSort();
 		void			sortVector();
 		void			sortDeque();
+		// Merge Insert Sort
+		void			mergeSort(std::vector<std::pair<int, int> >& vPairs, int begin, int end);
+		void			mergeSort(std::deque<std::pair<int, int> >& dPairs, int begin, int end);
+		void			merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end);
+		void			merge(std::deque<std::pair<int, int> >& dPairs, int begin, int mid, int end);
 		
 		// Debug
 		void			printNumbers() const;
