@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:42:18 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/26 04:42:15 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/27 02:40:29 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,52 +107,6 @@ void	PmergeMe::globalSort()
 	sortDeque();
 }
 
-void			merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end)
-{
-	int	firstMid	= mid - begin + 1;
-	int	lastMid		= end - mid;
-
-	std::vector<std::pair<int, int> >	vFirstMid(firstMid);
-	std::vector<std::pair<int, int> >	vLastMid(lastMid);
-
-	for (int i = 0; i < firstMid; i++)
-		vFirstMid[i]	= vPairs[begin + i];
-	for (int j = 0; j < lastMid; j++)
-		vLastMid[j]		= vPairs[mid + 1 + j];
-	
-	int	i	= 0;
-	int	j	= 0;
-	int	k	= begin;
-
-	while (i < firstMid && j < lastMid)
-	{
-		if (vFirstMid[i] <= vLastMid[j])
-		{
-			vPairs[k] = vFirstMid[i];
-			i++;
-		}
-		else
-		{
-			vPairs[k] = vLastMid[i];
-		}
-		k++;
-	}
-	
-	while (i < firstMid)
-	{
-		vPairs[k] = vLastMid[i];
-		i++;
-		k++;
-	}
-
-	while (j < lastMid)
-	{
-		vPairs[k] = vLastMid[j];
-		j++;
-		k++;
-	}
-}
-
 void			PmergeMe::merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end)
 {
 	int	firstMid	= mid - begin + 1;
@@ -187,7 +141,7 @@ void			PmergeMe::merge(std::vector<std::pair<int, int> >& vPairs, int begin, int
 	
 	while (i < firstMid)
 	{
-		vPairs[k] = vLastMid[i];
+		vPairs[k] = vFirstMid[i];
 		i++;
 		k++;
 	}
@@ -234,7 +188,7 @@ void			PmergeMe::merge(std::deque<std::pair<int, int> >& dPairs, int begin, int 
 	
 	while (i < firstMid)
 	{
-		dPairs[k] = dLastMid[i];
+		dPairs[k] = dFirstMid[i];
 		i++;
 		k++;
 	}
@@ -285,25 +239,28 @@ void	PmergeMe::sortVector()
 			vPairs.push_back(std::make_pair(*(itV + 1), *itV));
 	}
 
-	mergeSort(vPairs, 0, vPairs.size() - 1);
+	if (!vPairs.empty())
+		mergeSort(vPairs, 0, vPairs.size() - 1);
 	
 	_vector.clear();
-	_vector.push_back(vPairs.begin()->first);
-	for (std::vector<std::pair<int, int> >::iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
-		_vector.push_back(itVP->second);
-	// for (std::vector<std::pair<int, int> >::iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
-	// {
-	// 	std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), itVP->first);
-	// 	_vector.insert(pos, itVP->first);
-	// }
-	// std::vector<size_t> buildJacorbsthalOrder(size_t pairCount);
-	if (_isOdd)
+	if (!vPairs.empty())
 	{
-		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), _oddValue);
-		_vector.insert(pos, _oddValue);
+		_vector.push_back(vPairs[0].first);
+		for (std::vector<std::pair<int, int> >::iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
+			_vector.push_back(itVP->second);
+		for (size_t i = 1; i < vPairs.size(); i++)
+		{
+			std::vector<int>::iterator pos;
+			pos = std::lower_bound(_vector.begin(), _vector.end(), vPairs[i].first);
+			_vector.insert(pos, vPairs[i].first);
+		}
+		if (_isOdd)
+		{
+			std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), _oddValue);
+			_vector.insert(pos, _oddValue);
+		}
 	}
 	
-		
 	clock_t	end		= clock();
 	_vLaps	= static_cast<double>(end - start) * 1000000.0 / CLOCKS_PER_SEC;
 }
@@ -321,17 +278,8 @@ void	PmergeMe::sortDeque()
 		else
 			dPairs.push_back(std::make_pair(*(itD + 1), *itD));
 	}
-
-	// for (size_t i = 0; i < dPairs.size(); i++)
-	// {
-	// 	for (size_t j = 0; j + 1 < dPairs.size() - i; j++)
-	// 	{
-	// 		if (dPairs[j].second > dPairs[j + 1].second)
-	// 			std::swap(dPairs[j], dPairs[j + 1]);
-	// 	}
-	// }
-
-	mergeSort(dPairs, 0, dPairs.size() - 1);
+	if (!dPairs.empty())
+		mergeSort(dPairs, 0, dPairs.size() - 1);
 
 		
 	_deque.clear();
