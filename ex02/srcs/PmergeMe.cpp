@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:42:18 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/27 02:40:29 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/27 06:07:52 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,36 @@ void	PmergeMe::mergeSort(std::deque<std::pair<int, int> >& dPairs, int begin, in
 	merge(dPairs, begin, mid, end);
 }
 
+std::vector<size_t>	PmergeMe::generateJacobsthalOrder(size_t nbPairs)
+{
+	std::vector<size_t>	order;
+	
+	if (nbPairs <= 1)
+		return order;
+
+	size_t	previous = 1;
+	size_t	prevMin1 = 1;
+	size_t	prevMin2 = 0;
+
+	while (true)
+	{
+		size_t current = prevMin1 + 2 * prevMin2;
+		if (current > previous)
+		{
+			size_t	upper = std::min(current, nbPairs);
+			
+			for (size_t i = upper; i > previous; i--)
+				order.push_back(i - 1);
+
+			if (upper == nbPairs)
+				break ;
+			previous = upper;
+		}
+		prevMin2 = prevMin1;
+		prevMin1 = current;
+	}	
+	return (order);
+}
 
 void	PmergeMe::sortVector()
 {
@@ -248,11 +278,14 @@ void	PmergeMe::sortVector()
 		_vector.push_back(vPairs[0].first);
 		for (std::vector<std::pair<int, int> >::iterator itVP = vPairs.begin(); itVP != vPairs.end(); itVP++)
 			_vector.push_back(itVP->second);
-		for (size_t i = 1; i < vPairs.size(); i++)
+		
+		std::vector<size_t>	order = generateJacobsthalOrder(vPairs.size());
+		for (size_t i = 0; i < order.size(); i++)
 		{
+			size_t	idx = order[i];
 			std::vector<int>::iterator pos;
-			pos = std::lower_bound(_vector.begin(), _vector.end(), vPairs[i].first);
-			_vector.insert(pos, vPairs[i].first);
+			pos = std::lower_bound(_vector.begin(), _vector.end(), vPairs[idx].first);
+			_vector.insert(pos, vPairs[idx].first);
 		}
 		if (_isOdd)
 		{
@@ -283,17 +316,25 @@ void	PmergeMe::sortDeque()
 
 		
 	_deque.clear();
-	for (std::deque<std::pair<int, int> >::iterator itDP = dPairs.begin(); itDP != dPairs.end(); itDP++)
-		_deque.push_back(itDP->second);
-	for (std::deque<std::pair<int, int> >::iterator itDP = dPairs.begin(); itDP != dPairs.end(); itDP++)
+	if (!dPairs.empty())
 	{
-		std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), itDP->first);
-		_deque.insert(pos, itDP->first);
-	}
-	if (_isOdd)
-	{
-		std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), _oddValue);
-		_deque.insert(pos, _oddValue);
+		_deque.push_back(dPairs[0].first);
+		for (std::deque<std::pair<int, int> >::iterator itDP = dPairs.begin(); itDP != dPairs.end(); itDP++)
+			_deque.push_back(itDP->second);
+		
+		std::vector<size_t>	order = generateJacobsthalOrder(dPairs.size());
+		for (size_t i = 0; i < order.size(); i++)
+		{
+			size_t	idx = order[i];
+			std::deque<int>::iterator pos;
+			pos = std::lower_bound(_deque.begin(), _deque.end(), dPairs[idx].first);
+			_deque.insert(pos, dPairs[idx].first);
+		}
+		if (_isOdd)
+		{
+			std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), _oddValue);
+			_deque.insert(pos, _oddValue);
+		}
 	}
 	
 	clock_t	end		= clock();

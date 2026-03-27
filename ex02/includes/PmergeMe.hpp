@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:45:58 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/27 05:02:09 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/27 06:07:52 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ class PmergeMe
 		void			merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end);
 		void			merge(std::deque<std::pair<int, int> >& dPairs, int begin, int mid, int end);
 		// Jacobsthal
-		std::vector<size_t>		createJacobsthal(size_t	nbPairs);
+		std::vector<size_t>		generateJacobsthalOrder(size_t	nbPairs);
 		
 		// Debug
 		void			printNumbers() const;
