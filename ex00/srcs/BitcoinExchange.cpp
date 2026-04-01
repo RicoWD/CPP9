@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 21:17:38 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/20 14:24:38 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/04/01 02:18:57 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ const std::map<std::string, float>& BitcoinExchange::getData() const
 //																	 		  //
 /* ************************************************************************** */
 
-void	BitcoinExchange::loadDatabase(const std::string& filename)
+bool	BitcoinExchange::loadDatabase(const std::string& filename)
 {
 	std::ifstream	db;
 	
@@ -61,14 +61,14 @@ void	BitcoinExchange::loadDatabase(const std::string& filename)
 	if (!db)
 	{
 		std::cerr << "Error: cannot open database file: " << filename << std::endl;
-		return ;
+		return (false);
 	}
 
 	std::string		line;
 	if (!std::getline(db, line))
 	{
 		std::cerr << "Error: empty database file." << std::endl;
-		return ;
+		return (false);
 	}
 
 	while (std::getline(db, line))
@@ -89,6 +89,7 @@ void	BitcoinExchange::loadDatabase(const std::string& filename)
 		_data[date] = exchangeRate;
 	}
 	db.close();
+	return (true);
 }
 
 void BitcoinExchange::processInput(const std::string& filename)
@@ -215,6 +216,9 @@ bool	BitcoinExchange::isValidValue(const float value) const
 
 float	BitcoinExchange::getRateForDate(const std::string& date) const
 {
+	if (_data.empty())
+		return (0.0f);
+
 	std::map<std::string, float>::const_iterator it = _data.lower_bound(date);
 	
 	if (it == _data.end())

@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 20:37:24 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/20 03:52:46 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/04/01 02:18:54 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class BitcoinExchange
 		const std::map<std::string, float>&	getData() const;
 
 		// Member Functions
-		void	loadDatabase(const std::string& filename);
+		bool	loadDatabase(const std::string& filename);
 		void	processInput(const std::string& filename);
 
 		bool	isValidDate(const std::string& date) const;
