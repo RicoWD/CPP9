@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 21:29:22 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/20 05:21:15 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/04/01 02:20:47 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,25 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	
-	const std::string dbFilename = "data.csv";
+	std::string dbFilename = "data.csv";
+	std::ifstream dbFile(dbFilename.c_str(), std::ifstream::in);
+	if (!dbFile)
+	{
+		dbFilename = "ex00/data.csv";
+		dbFile.clear();
+		dbFile.open(dbFilename.c_str(), std::ifstream::in);
+	}
+	if (!dbFile)
+	{
+		std::cerr << "Error: cannot open database file: data.csv" << std::endl;
+		return (1);
+	}
+	dbFile.close();
+
 	const std::string inputFilename = argv[1];
 	BitcoinExchange data;
 
-	data.loadDatabase(dbFilename);
+	if (!data.loadDatabase(dbFilename))
+		return (1);
 	data.processInput(inputFilename);
-	// const std::map<std::string, float>& db = data.getData();
-
-	// for (std::map<std::string, float>::const_iterator it = db.begin(); it != db.end(); it++)
-	// 	std::cout << it->first << " || " << it->second << std::endl;
 }
