@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:42:18 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/27 06:07:52 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/03/27 10:48:28 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,10 @@ void	PmergeMe::printNumbers() const
 	std::cout << std::endl;
 }
 
-void	PmergeMe::globalSort()
-{
-	_isOdd = false;
-	if (_nbInts %2 != 0)
-	{
-		_isOdd = true;
-		_oddValue = _vector.back();
-	}
-	sortVector();
-	sortDeque();
-}
+
+/* ************************************************************************** */
+// 						   			MERGE SORT								  //
+/* ************************************************************************** */
 
 void			PmergeMe::merge(std::vector<std::pair<int, int> >& vPairs, int begin, int mid, int end)
 {
@@ -224,6 +217,10 @@ void	PmergeMe::mergeSort(std::deque<std::pair<int, int> >& dPairs, int begin, in
 	merge(dPairs, begin, mid, end);
 }
 
+/* ************************************************************************** */
+// 						   			JACOBSTHAL								  //
+/* ************************************************************************** */
+
 std::vector<size_t>	PmergeMe::generateJacobsthalOrder(size_t nbPairs)
 {
 	std::vector<size_t>	order;
@@ -255,18 +252,34 @@ std::vector<size_t>	PmergeMe::generateJacobsthalOrder(size_t nbPairs)
 	return (order);
 }
 
+/* ************************************************************************** */
+// 						   			EXECUTION								  //
+/* ************************************************************************** */
+
+void	PmergeMe::globalSort()
+{
+	_isOdd = false;
+	if (_nbInts %2 != 0)
+	{
+		_isOdd = true;
+		_oddValue = _vector.back();
+	}
+	sortVector();
+	sortDeque();
+}
+
 void	PmergeMe::sortVector()
 {
 	clock_t	start	=	clock();
 	std::vector<std::pair<int, int> > vPairs;
 	
 	vPairs.clear();
-	for (std::vector<int>::const_iterator itV = _vector.begin(); itV < _vector.end() - 1; itV += 2)
+	for (size_t i = 0; i + 1 < _vector.size(); i += 2)
 	{
-		if (*itV < *(itV + 1))
-			vPairs.push_back(std::make_pair(*itV, *(itV + 1)));
+		if (_vector[i] < _vector[i + 1])
+			vPairs.push_back(std::make_pair(_vector[i], _vector[i + 1]));
 		else
-			vPairs.push_back(std::make_pair(*(itV + 1), *itV));
+			vPairs.push_back(std::make_pair(_vector[i + 1], _vector[i]));
 	}
 
 	if (!vPairs.empty())
@@ -283,15 +296,17 @@ void	PmergeMe::sortVector()
 		for (size_t i = 0; i < order.size(); i++)
 		{
 			size_t	idx = order[i];
-			std::vector<int>::iterator pos;
-			pos = std::lower_bound(_vector.begin(), _vector.end(), vPairs[idx].first);
+			std::vector<int>::iterator bound = std::lower_bound(_vector.begin(), _vector.end(), vPairs[idx].second);
+			if (bound != _vector.end() && *bound == vPairs[idx].second)
+				++bound;
+			std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), bound, vPairs[idx].first);
 			_vector.insert(pos, vPairs[idx].first);
 		}
-		if (_isOdd)
-		{
-			std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), _oddValue);
-			_vector.insert(pos, _oddValue);
-		}
+	}
+	if (_isOdd)
+	{
+		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), _oddValue);
+		_vector.insert(pos, _oddValue);
 	}
 	
 	clock_t	end		= clock();
@@ -304,12 +319,12 @@ void	PmergeMe::sortDeque()
 	std::deque<std::pair<int, int> > dPairs;
 
 	dPairs.clear();
-	for (std::deque<int>::const_iterator itD = _deque.begin(); itD < _deque.end() - 1; itD += 2)
+	for (size_t i = 0; i + 1 < _deque.size(); i += 2)
 	{
-		if (*itD < *(itD + 1))
-			dPairs.push_back(std::make_pair(*itD, *(itD + 1)));
+		if (_deque[i] < _deque[i + 1])
+			dPairs.push_back(std::make_pair(_deque[i], _deque[i + 1]));
 		else
-			dPairs.push_back(std::make_pair(*(itD + 1), *itD));
+			dPairs.push_back(std::make_pair(_deque[i + 1], _deque[i]));
 	}
 	if (!dPairs.empty())
 		mergeSort(dPairs, 0, dPairs.size() - 1);
@@ -326,15 +341,17 @@ void	PmergeMe::sortDeque()
 		for (size_t i = 0; i < order.size(); i++)
 		{
 			size_t	idx = order[i];
-			std::deque<int>::iterator pos;
-			pos = std::lower_bound(_deque.begin(), _deque.end(), dPairs[idx].first);
+			std::deque<int>::iterator bound = std::lower_bound(_deque.begin(), _deque.end(), dPairs[idx].second);
+			if (bound != _deque.end() && *bound == dPairs[idx].second)
+				++bound;
+			std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), bound, dPairs[idx].first);
 			_deque.insert(pos, dPairs[idx].first);
 		}
-		if (_isOdd)
-		{
-			std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), _oddValue);
-			_deque.insert(pos, _oddValue);
-		}
+	}
+	if (_isOdd)
+	{
+		std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), _oddValue);
+		_deque.insert(pos, _oddValue);
 	}
 	
 	clock_t	end		= clock();
