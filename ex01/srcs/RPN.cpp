@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:23:28 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/20 13:34:24 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/04/01 02:22:06 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,22 @@ void	RPN::calc(std::string op)
 //																	 		  //
 /* ************************************************************************** */
 
-class RPN::NotEnoughOperandException::what() const throw()
+const char *RPN::NotEnoughOperandException::what() const throw()
 {
 	return ("Not Enough Operand Exception");
 }
 
-class RPN::DivisionByZeroException::what() const throw()
+const char *RPN::DivisionByZeroException::what() const throw()
 {
 	return ("Division By Zero Exception");
 }
 
-class RPN::InvalideTokenException::what() const throw()
+const char *RPN::InvalideTokenException::what() const throw()
 {
 	return ("Invalide Token Exception");
 }
 
-class RPN::InvalideTokenException::what() const throw()
+const char *RPN::InvalideExpressionException::what() const throw()
 {
-	return ("Invalide Token Exception");
+	return ("Invalide Expression Exception");
 }
