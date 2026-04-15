@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:23:28 by erpascua          #+#    #+#             */
-/*   Updated: 2026/04/01 02:22:06 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:26:13 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	RPN::calc(std::string op)
 	std::list<int>		lst;
 	std::istringstream	iss(op);
 	std::string			token;
+	long				iMax = INT_MAX;
+	long				iMin = INT_MIN;
 
 	while (iss >> token)
 	{
@@ -39,22 +41,30 @@ void	RPN::calc(std::string op)
 			lst.pop_back();
 			int a = lst.back();
 			lst.pop_back();
+			long result;
 
 			if (token == "+")
-				lst.push_back(a + b);
+				result = static_cast<long>(a) + static_cast<long>(b);
 			else if (token == "-")
-				lst.push_back(a - b);
+				result = static_cast<long>(a) - static_cast<long>(b);
 			else if (token == "*")
-				lst.push_back(a * b);
-			else if (token == "/")
+				result = static_cast<long>(a) * static_cast<long>(b);
+			else
 			{
 				if (b == 0)
 				{
 					std::cerr << "Error: Division by zero not allowed" << std::endl;
 					return ;
 				}
-				lst.push_back(a / b);
+				result = static_cast<long>(a) / static_cast<long>(b);
 			}
+
+			if (result > iMax || result < iMin)
+			{
+				std::cerr << "Error: Integer overflow" << std::endl;
+				return ;
+			}
+			lst.push_back(static_cast<int>(result));
 		}
 		else
 		{
@@ -64,10 +74,7 @@ void	RPN::calc(std::string op)
 	}
 	if (lst.size() != 1)
 	{
-		if (op.find("+-*/") != std::string::npos)
-			std::cout << op << std::endl;
-		else
-			std::cerr << "Error: Invalid expression" << std::endl;
+		std::cerr << "Error: Invalid expression" << std::endl;
 		return ;
 	}
 	std::cout << lst.back() << std::endl;

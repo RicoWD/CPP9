@@ -6,7 +6,7 @@
 /*   By: erpascua <erpascua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:12:26 by erpascua          #+#    #+#             */
-/*   Updated: 2026/03/13 13:35:04 by erpascua         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:26:26 by erpascua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <exception>
+#include <climits>
+
 
 class RPN
 {
